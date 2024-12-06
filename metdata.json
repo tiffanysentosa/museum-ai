@@ -2209,58 +2209,7 @@
             "location_from_painting": "From Gallery 829, the painting of the Self Portrait Spurveskjul, exit the gallery and turn left. Walk straight into Gallery 828 and look ahead to find painting of a women, Head of a Woman, on the right hand side of the wall."
           }
         ]
-      },                                                         
-      {
-        "id": "empty",
-        "title": "",
-        "artist": "",
-        "year": "",
-        "description": "",
-        "location": {
-          "room": "",
-          "description": ""
-        },
-        "tags": [],
-        "visual_description": {
-          "dominant_colors": [],
-          "size": "",
-          "style": "",
-          "notable_elements": ""
-        },
-        "narrative": {
-          "general": "",
-          "historical_context": "",
-          "symbolic_meaning": "",
-          "conversational_prompts": [
-            ""
-          ]
-        },
-        "expert_knowledge": [
-          {
-            "expert_name": "",
-            "credentials": "",
-            "insight": ""
-          },
-          {
-            "expert_name": "",
-            "credentials": "",
-            "insight": ""
-          }
-        ],
-        "things_to_mention": "",
-        "web_links": [
-          ""
-        ],
-        "related_paintings": [
-          {
-            "painting": "",
-            "artist": "",
-            "year": "",
-            "reason": "",
-            "location_from_painting": ""
-          }
-        ]
-      }      
+      }                                                   
     ]
   }
   
