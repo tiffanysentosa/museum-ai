@@ -17,11 +17,11 @@ from memory_agent import (
 
 
 def initialize_agent():
-    # base_url = "https://generativelanguage.googleapis.com/v1beta/openai/"
-    # model = "gemini-1.5-flash"
+    base_url = "https://generativelanguage.googleapis.com/v1beta/openai/"
+    model = "gemini-1.5-flash"
 
-    base_url = "http://localhost:11434/v1"
-    model = "gemma2:2b"
+    #base_url = "http://localhost:11434/v1"
+    #model = "gemma2:2b"
 
     agent = AIAgent(model=model, base_url=base_url)
     agent.register_tool("search_paintings", search_paintings)

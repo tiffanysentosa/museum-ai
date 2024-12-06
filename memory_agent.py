@@ -433,7 +433,7 @@ class AIAgent:
                 self.messages.append({"role": "assistant", "content": result})
                 print(f"Result: {result}")
 
-                if result.lower().startswith("answer:"):
+                if result.lower().startswith("Answer:"):
                     return result.split("Answer:", 1)[1].strip()
 
                 actions = [
@@ -474,11 +474,11 @@ class AIAgent:
 if __name__ == "__main__":
     # Create and configure agent
 
-    base_url = "http://localhost:11434/v1"
-    model = "gemma2:2b"
+    # base_url = "http://localhost:11434/v1"
+    # model = "gemma2:2b"
 
-    # base_url = "https://generativelanguage.googleapis.com/v1beta/openai/"
-    # model = "gemini-1.5-flash"
+    base_url = "https://generativelanguage.googleapis.com/v1beta/openai/"
+    model = "gemini-1.5-flash"
 
     agent = AIAgent(model=model, base_url=base_url)
 
