@@ -14,6 +14,7 @@
         "visual_description": {
           "dominant_colors": ["green", "blue", "brown"],
           "size": "100 x 110 inches",
+          "medium": "Oil on canvas",
           "style": "Naturalist",
           "notable_elements": "In Joan of Arc, a young woman stands in a rustic garden, surrounded by a tangle of plants and earthy colors. She wears simple, worn clothes, with a loose blouse and skirt, blending her into the rural environment. Her expression is distant, almost transfixed, as she gazes slightly to the side, as if seeing something beyond the physical world. Behind her, faint, ghostly figures emerge: they are semi-transparent saints, only partially visible and seeming to hover, ethereal yet soft, in the natural surroundings. The background depicts a countryside scene with a modest wooden home, overgrown plants, and earthy tones that suggest a life of hard work and simplicity. Joan is bathed in a soft, natural light, which creates a warm, subtle glow around her, contrasting with the dimmer, more shadowed elements of the garden behind her. This combination of realistic details and faint, otherworldly apparitions brings an air of quiet mysticism, making Joan appear as a young, humble figure caught in a moment of divine revelation."
         },
@@ -76,6 +77,7 @@
         "visual_description": {
           "dominant_colors": ["Earth tones", "Soft blues", "Warm flesh tones"],
           "size": "129.2 x 89.2 cm (50 7/8 x 35 1/8 in.)",
+          "medium": "Oil on canvas",
           "style": "Academic Realism",
           "notable_elements": "The meticulous rendering of the children's traditional Breton costumes, the serene expressions on their faces, and the detailed depiction of the rural background."
         },
@@ -102,7 +104,7 @@
             "insight": "Wissman highlights Bouguereau's ability to combine technical precision with emotional depth, creating works that are both aesthetically pleasing and evocative of the human experience."
           }
         ],
-        "things_to_mention": "",
+        "things_to_mention": "Breton Brother and Sister* by William-Adolphe Bouguereau is a striking depiction of rural life and familial bonds, showcasing the artist's characteristic blend of realism and idealism. The painting portrays a young brother and sister in traditional Breton attire, emphasizing the cultural identity of the Brittany region in northwest France. Bouguereau's soft brushstrokes and meticulous attention to detail are evident in the children's tender expressions, the intricate textures of their clothing, and the serene countryside backdrop. Through this work, Bouguereau captures themes of innocence, simplicity, and the enduring connection between siblings, while also preserving a visual record of Breton culture during a time of growing industrialization and urbanization. The painting exemplifies Bouguereau's mastery of realism, as he elevates everyday rural scenes into timeless, poetic art.",
         "web_links": [
           "https://www.metmuseum.org/art/collection/search/435754",
           "https://en.wikipedia.org/wiki/Breton_Brother_and_Sister"
@@ -138,6 +140,7 @@
         "visual_description": {
           "dominant_colors": ["Earth tones", "Soft whites", "Muted blues"],
           "size": "115 x 85 cm (45 1/8 x 33 3/8 in.)",
+          "medium": "Oil on canvas",
           "style": "Naturalism",
           "notable_elements": "The meticulous rendering of traditional Breton costumes, the varied expressions of the participants, and the detailed depiction of the church architecture and surrounding environment."
         },
@@ -164,7 +167,7 @@
             "insight": "Wold highlights Dagnan-Bouveret's use of photography as an aid in achieving the painting's exactitude, noting that annotated drawings on the reverse of the canvas indicate that the painter’s wife posed for the young woman in the foreground."
           }
         ],
-        "things_to_mention": "",
+        "things_to_mention": "*Pardon at Brittany* by Pascal Adolphe Jean Dagnan-Bouveret captures a moment of profound spirituality and cultural tradition in the Brittany region of France. The painting depicts a religious procession known as a "pardon," a traditional Breton Catholic pilgrimage where participants seek penance and forgiveness. Dagnan-Bouveret's attention to detail is remarkable, from the distinctiveness of traditional Breton costumes to the earnest expressions of the participants, which evoke a deep sense of faith and community. The muted tones and naturalistic style ground the scene in reality while highlighting the solemn atmosphere of the event. Through this work, the artist not only documents a culturally significant ritual but also invites viewers to reflect on themes of devotion, heritage, and collective identity.",
         "web_links": [
           "https://www.metmuseum.org/art/collection/search/436076"
         ],
@@ -198,7 +201,8 @@
         "tags": ["Naturalism", "Rural Life", "Harvest", "French Art", "19th Century"],
         "visual_description": {
           "dominant_colors": ["Earth tones", "Greens", "Warm browns"],
-          "size": "",
+          "size": "99 x 82 5/8 in. (251.5 x 209.9 cm)",
+          "medium": "Oil on canvas",
           "style": "Naturalism",
           "notable_elements": "Detailed depiction of grape harvesters working together, with expressive gestures and facial expressions that reflect both the effort and camaraderie of rural life."
         },
@@ -635,21 +639,21 @@
             "artist": "Christian Krohg",
             "year": "1879",
             "reason": "Both paintings emphasize the value and patience required in manual labor, focusing on the rhythm of work.",
-            "location_from_painting": ""
+            "location_from_painting": "Turn around and walk towards the far left corner of the room to see a painting of men working in the park called The Net Mender."
           },
           {
             "painting": "Picquigny",
             "artist": "Frits Thaulow",
             "year": "1899",
             "reason": "Like Liebermann’s work, *Picquigny* captures a quiet moment of rural life with an emphasis on structure and setting.",
-            "location_from_painting": ""
+            "location_from_painting": "Turn to your left to see a painting of a peaceful landscape with a river called Picquigny."
           },
           {
             "painting": "In Fosset. Twilight",
             "artist": "Fernand Khnopff",
             "year": "1890",
             "reason": "This painting captures a natural, atmospheric setting that reflects the peaceful and structured environment seen in *The Ropewalk on Edam*.",
-            "location_from_painting": ""
+            "location_from_painting": "Turn around and walk towards the right entryway of the room that goes to gallery 829. Once you are in the other room turn to the left to see a painting of a hazy landscape with a tree and river called In Fosset. Twilight."
           }
         ]
       },
@@ -735,6 +739,7 @@
         "visual_description": {
           "dominant_colors": ["Soft browns", "Muted blues", "Warm earth tones"],
           "size": "51 1/2 x 38 5/8 in. (130.8 x 98.1 cm)",
+          "medium": "Oil on canvas",
           "style": "Realism",
           "notable_elements": "Soap Bubbles by Thomas Couture is painted in the Realist style. Realism emerged in the mid-19th century as a movement that focused on depicting everyday subjects and people in a true-to-life manner, without idealization or romanticism. In Soap Bubbles, Couture captures the quiet, contemplative moment of a young boy in a realistic, detailed way, conveying themes of innocence, fleeting time, and introspection, which were common in Realist art."
         },
@@ -796,6 +801,7 @@
         "visual_description": {
           "dominant_colors": ["Warm skin tones", "Soft whites", "Earth tones"],
           "size": " 56 x 40 1/2 in. (142.2 x 102.9 cm)",
+          "medium": "Oil on canvas",
           "style": "Neoclassicism",
           "notable_elements": "The mother’s gentle expression, the soft lighting that highlights the bond between mother and child, and the realistic details in their clothing and skin."
         },
@@ -832,21 +838,21 @@
             "artist": "Leon Frederic",
             "year": "1896",
             "reason": "Both paintings emphasize family bonds and capture intimate moments of connection among loved ones.",
-            "location_from_painting": ""
+            "location_from_painting": "Turn around and along the wall to your right you'll see a large painting of three girls peeling potatoes called The Three Sisters."
           },
           {
             "painting": "Breton Brother and Sister",
             "artist": "William-Adolphe Bouguereau",
             "year": "1871",
             "reason": "Both works portray the innocence and beauty of family relationships in a realistic style.",
-            "location_from_painting": ""
+            "location_from_painting": "On the same wall and on the righthand side of the huge painting of Joan of Arc you;ll see a painting of a brother and sister. The sister is wearing a white headdress and a red skirt and the brother is wearing a red hat. This painting is called Breton Brother and Sister."
           },
           {
             "painting": "Soap Bubbles",
             "artist": "Thomas Couture",
             "year": "1859",
             "reason": "Like *Young Mother Gazing at Her Child*, this painting captures the innocence and fleeting nature of childhood.",
-            "location_from_painting": ""
+            "location_from_painting": "The painting on your left hand side is called Soap Bubbles."
           }
         ]
       },
@@ -863,7 +869,8 @@
         "tags": ["Post-Impressionism", "Landscape", "French Art", "20th Century", "Color"],
         "visual_description": {
           "dominant_colors": ["Warm yellows", "Lush greens", "Blues"],
-          "size": "",
+          "size": "58 1/4 × 76 3/4 in. (148 × 194.9 cm)",
+          "medium": "Oil on canvas",
           "style": "Post-Impressionism",
           "notable_elements": "Tree trunk, Terracotta buildings, White table cloth, grapes, fruits, two figures carrying fruits, rich greenery, and expressive brushstrokes that bring the scene to life."
         },
@@ -924,7 +931,8 @@
         "tags": ["Blue Period", "Portrait", "Expressionism", "Spanish Art", "20th Century"],
         "visual_description": {
           "dominant_colors": ["Shades of blue", "Soft greys", "Muted whites"],
-          "size": "",
+          "size": "15 7/8 x 14in. (40.3 x 35.6cm)",
+          "medium": "Oil on canvas",
           "style": "Blue Period",
           "notable_elements": "Somber expression, elongated features, and monochromatic blue tones that convey a sense of melancholy."
         },
@@ -1085,21 +1093,21 @@
             "artist": "George Minne",
             "year": "1896",
             "reason": "Both works focus on simplified, sculptural forms to capture universal emotions and rituals.",
-            "location_from_painting": ""
+            "location_from_painting": "On your right hand side you'll see an entryway. Walk through it and turn right to see a statue of 3 women made out of wood called Three Holy Women at the Tomb."
           },
           {
             "painting": "Serena Pulitzer Lederer",
             "artist": "Gustav Klimt",
             "year": "1899",
             "reason": "Both portraits highlight elegance and femininity, focusing on the figure's form and presence.",
-            "location_from_painting": ""
+            "location_from_painting": "On your right hand side you'll see an entryway. Walk through it and turn right. Turn around to see a portrait of a woman in white. This portrait is called Serena Pulitzer Lederer."
           },
           {
             "painting": "The Lace Shawl",
             "artist": "Helene Schjerfbeck",
             "year": "1920",
             "reason": "Both paintings capture women in contemplative moments with a focus on simplicity and introspection.",
-            "location_from_painting": ""
+            "location_from_painting": "On your right hand side you'll see an entryway. Walk through it and turn right. Walk to the opposite wall to see a portrait of a woman in a shawl. This portrait is called The Lace Shawl."
           }
         ]
       },
@@ -1323,7 +1331,8 @@
         "tags": ["Intimism", "Landscape", "French Art", "20th Century", "Nature"],
         "visual_description": {
           "dominant_colors": ["Greens", "Soft yellows", "Muted earth tones"],
-          "size": "",
+          "size": "59 1/2 × 43 5/8 in. (151.1 × 110.8 cm)",
+          "medium": "Oil on canvas",
           "style": "Intimism",
           "notable_elements": "This painting depicts a lush garden in Vaucresson, filled with vibrant greenery, a woman draped in pink, and a blue house in the background. Vuillard’s attention to texture and detail brings out the peacefulness of the garden, creating an inviting atmosphere."
         },
@@ -1391,7 +1400,8 @@
         "tags": ["Classicism", "Symbolism", "Mythology", "Youth", "20th Century", "Austrian Art"],
         "visual_description": {
           "dominant_colors": ["Soft greens", "Earth tones", "Pale yellows"],
-          "size": "",
+          "size": "74 1/4 × 71 in. (188.6 × 180.3 cm)",
+          "medium": "Oil on canvas",
           "style": "Classicism",
           "notable_elements": "This painting shows a young figure playing the pipes of Pan, surrounded by an idealized natural setting and two women carrying flowers and fruits."
         },
@@ -1453,13 +1463,14 @@
         "year": "1906",
         "description": "Born in Leipzig to a wealthy prominent family, and trained at the academy in Berlin, Max Klinger was an equally gifted painter, printmaker, and sculptor. He worked in a naturalistic figurative style and from it developed an art that was polemical in intent, uncanny in effect, and often controversial in reception. Klinger created Galatea at the height of his artistic fame when he was celebrated in German speaking countries as one of their greatest sculptors. He was best known for his complex polychrome sculptures that were assembled from assorted colored marbles and bronze. The mythical sea-goddess and child seated on a marble throne is Klinger’s only independent figurative sculpture in silver. In 1906 Klinger presented Galatea as his principle work at the prestigious exhibition of German contemporary art in Weimar. Shown in triumph, Klinger’s figure of the sea-goddess Galatea resonates with the primal aura of an idol. The subject was familiar to Klinger’s contemporaries from Goethe’s famous description of triumphant Galatea, Grave in aspect like the gods, in dignified immortality… (Faust II, 8387-90). But Klinger also drew from the contemporary philosophy of Nietzsche and Freudian psychology to create an unprecedented depiction of the goddess enthroned with a male child who together represent the archetypal union between body and mind, female and male, sexuality and the psyche.",
         "location": {
-          "room": "",
-          "description": ""
+          "room": "829",
+          "description": "The sculpture is located in the center of the gallery."
         },
         "tags": ["Neoclassicism", "Symbolism", "Mythology", "Classical", "German Art", "20th Century"],
         "visual_description": {
           "dominant_colors": ["Soft blues", "Earth tones", "Pale whites"],
           "size": "43 3/4 × 12 1/2 × 18 3/4 in. (111.1 × 31.8 × 47.6 cm)",
+          "medium": "Cast silver; marble",
           "style": "Symbolism and Neoclassicism",
           "notable_elements": "Galatea’s is portrayed as a classical figure of a naked woman sitting upright on a marble throne with a child at her feet."
         },
@@ -1501,21 +1512,21 @@
                 "artist": "Jules Bastien-Lepage",
                 "year": "1879",
                 "reason": "Both works depict a strong, contemplative female figure, conveying themes of resilience and spiritual depth.",
-                "location_from_painting": ""
+                "location_from_painting": "After looking at Galatea, turn right and walk through the entryway. Once you enter the large gallery turn right and walk towards a large painting of a woman looking ahead. This painting is called Joan of Arc."
             },
             {
                 "painting": "The Three Sisters",
                 "artist": "Leon Frederic",
                 "year": "1896",
                 "reason": "Both pieces capture a sense of timelessness and introspection, focusing on figures that evoke mystery and a quiet, ethereal presence.",
-                "location_from_painting": ""
+                "location_from_painting": "After looking at Galatea, turn right and walk through the entryway. Once you enter the large gallery turn right and walk towards the opposite side of the room. There is a painting of 3 girls in red peeling potatoes. This painting is called The Three Sisters."
             },
             {
                 "painting": "Young Mother Gazing at Her Child",
                 "artist": "William Bouguereau",
                 "year": "1871",
                 "reason": "The serene, introspective quality of both works highlights the beauty of human connection and contemplation.",
-                "location_from_painting": ""
+                "location_from_painting": "After looking at Galatea, turn right and walk through the entryway. Once you enter the large gallery turn right and walk towards the large painting of a woman gazing ahead. Right next to that painting there is one of a woman with a child on her lap. This painting is called Young Mother Gazing at Her Child."
             }
         ]
       },
@@ -1532,7 +1543,8 @@
         "tags": ["Symbolism", "Mythology", "Dramatic", "German Art", "20th Century"],
         "visual_description": {
           "dominant_colors": ["Deep reds", "Dark browns", "Intense blacks"],
-          "size": "",
+          "size": "50 3/4 × 82 1/2 in. (128.9 × 209.6 cm)",
+          "medium": "Oil on canvas",
           "style": "Symbolism",
           "notable_elements": "Dramatic contrasts, twisted figures, and fiery tones that evoke a sense of despair and suffering in a hellish environment."
         },
@@ -1600,7 +1612,8 @@
         "tags": ["Portrait", "Elegance", "Finnish Art", "20th Century", "Introspection"],
         "visual_description": {
           "dominant_colors": ["Soft greys", "Muted whites", "Pale skin tones"],
-          "size": "",
+          "size": "22 13/16 × 14 3/8 in. (58 × 36.5 cm)",
+          "medium": "Oil on canvas",
           "style": "Portraiture",
           "notable_elements": "Simplified forms, soft colors, and the woman’s gentle, introspective expression that creates a peaceful and intimate atmosphere."
         },
@@ -1637,21 +1650,21 @@
             "artist": "Vilhelm Hammershoi",
             "year": "1911",
             "reason": "Self Portrait Spurveskjul by Vilhelm Hammershøi and The Lace Shawl by Helene Schjerfbeck both convey a sense of quiet introspection and solitude through their minimalist compositions and muted color palettes. Hammershøi’s self-portrait captures an introspective, almost withdrawn atmosphere, using subtle shades of gray to create a somber, contemplative mood that reflects his restrained style. Similarly, Schjerfbeck’s The Lace Shawl uses soft, earthy tones and simplified forms to evoke a feeling of delicate vulnerability and introspection. Both works invite viewers to engage with the inner emotional worlds of their subjects, highlighting solitude and the nuanced emotions beneath stillness.",
-            "location_from_painting": ""
+            "location_from_painting": "After looking at The Lace Shawl, turn around and walk towards the opposite wall. There is a painting of a man looking at us in a dark room.This painting is called Self Portrait Spurveskjul."
           },
           {
             "painting": "Woman with Mimosa",
             "artist": "Pierre Bonnard",
             "year": "1924",
             "reason": "The Lace Shawl by Helene Schjerfbeck and Woman with Mimosa both explore themes of femininity and introspection but do so through contrasting approaches. In The Lace Shawl, Schjerfbeck’s use of soft, muted colors and abstracted forms creates a delicate and enigmatic aura around the figure, evoking a quiet, introspective mood. Meanwhile, Woman with Mimosa (often associated with brightness and celebration due to the vibrant mimosa flower) might represent a more outward display of femininity and emotion. Together, these works showcase two perspectives on womanhood: one introspective and subdued, the other potentially more open and expressive.",
-            "location_from_painting": ""
+            "location_from_painting": "After looking at the Lace Shawl, turn around and walk towards the entryway next to a potrait of a woman in white. Once you are in the other room turn to the left to see a painting of flowers called Woman with Mimosa."
           },
           {
             "painting": "Head of a Woman",
             "artist": "Pablo Picasso",
             "year": "1903",
             "reason": "Head of a Woman by Pablo Picasso and The Lace Shawl by Helene Schjerfbeck both capture a contemplative female figure, yet they differ in style and emotional tone. Picasso’s piece, with its muted blue hues, reflects the introspective melancholy of his Blue Period, emphasizing emotional depth and isolation. In contrast, Schjerfbeck’s work employs softer, earthier tones with an abstracted approach, conveying a sense of mystery and introspection through simplicity and restraint. Both paintings explore the complexity of female emotion, each artist expressing it uniquely through their distinct styles.",
-            "location_from_painting": ""
+            "location_from_painting": "After looking at the Lace Shawl, turn around and walk towards the entryway next to a potrait of a woman in white. Once you are in the other room turn right and walk towards the righthand corner to find a portrait of a woman called Head of a Woman."
           }
         ]
       },
@@ -1659,7 +1672,7 @@
         "id": "26",
         "title": "Three Holy Women at the Tomb",
         "artist": "George Minne",
-        "year": "1896",
+        "year": "modeled 1896, carved before 1918",
         "description": "According to Christian tradition, the three holy women uncovered the empty tomb of Jesus Christ, bearing witness to his miraculous resurrection. Minne underscored the mysterious character of the event by completely enveloping the trio in concealing robes. The motif recalls the mourning figures carved on medieval tombs, but the stylized play of drapery and streamlined, simplified masses are the artist’s own invention. First modeled in plaster in 1896, the composition exists in bronze, granite, and wood versions. Conservative critics disparaged Minne’s style as coarse and primitive, but progressive artistic circles in Brussels and Vienna admired its emotional intensity and directness.",
         "location": {
           "room": "829",
@@ -1668,7 +1681,8 @@
         "tags": ["Symbolism", "Religious Scene", "Belgian Art", "19th Century", "Introspection"],
         "visual_description": {
           "dominant_colors": ["Browns", "Wooden"],
-          "size": "",
+          "size": "Overall: 24 × 16 1/8 × 7 7/8 in. (61 × 41 × 20 cm)",
+          "medium": "Varnished oak",
           "style": "Symbolism",
           "notable_elements": "Elongated forms, restrained color palette, and the expressive postures of the three women that convey mourning and reflection."
         },
@@ -1736,7 +1750,8 @@
         "tags": ["Symbolism", "Landscape", "Belgian Art", "19th Century", "Solitude"],
         "visual_description": {
           "dominant_colors": ["Soft greens", "Pale greys", "Muted greens"],
-          "size": "",
+          "size": "14 7/8 × 26 1/8 in. (37.8 × 66.4 cm)",
+          "medium": "Oil on canvas",
           "style": "Tonalist",
           "notable_elements": "Hazy atmosphere, cool tones, and the tranquil landscape scene that convey a sense of quiet solitude at twilight."
         },
@@ -2155,8 +2170,8 @@
         "visual_description": {
           "dominant_colors": ["Cool greys", "Muted whites", "Soft blacks"],
           "size": "35.5 x 39 3/8 in. (90 x 100 cm)",
-          "style": "Realism",
           "medium": "Oil on canvas",
+          "style": "Realism",
           "notable_elements": "Minimalist composition, soft lighting, and Hammershoi’s calm, introspective expression that conveys solitude."
         },
         "narrative": {
