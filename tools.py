@@ -5,6 +5,7 @@ import json
 import google.generativeai as genai
 from dotenv import load_dotenv
 import os
+import random
 
 load_dotenv()
 
@@ -185,7 +186,7 @@ def get_painting_response(painting_details):
     try:
         response = model.generate_content(prompt)
         crafted_response = response.text.strip()
-        crafted_response = crafted_response + "\n\n" + "Do you have any other questions or can I show you another painting I think you'd like?"
+        crafted_response = crafted_response
         return crafted_response
     except Exception as e:
         return f"An error occurred while generating the response: {str(e)}"
@@ -203,74 +204,50 @@ def get_related_paintings(painting_id):
             return related_paintings
     return None
 
-def get_painting_recommendation(related_paintings, painting_details, choice):
-    """
-    Recommends a painting based on the painting ID if the user chooses to see another painting.
+def get_painting_recommendation(related_paintings, painting_details, choice, visited_paintings):
+    # First, get IDs for all related paintings
+    paintings_data = load_dataset()
+    available_paintings = []
+    
+    # Build list of available paintings with their IDs
+    for related in related_paintings['related_paintings']:
+        for painting in paintings_data:
+            if painting['title'].lower() == related['painting'].lower():
+                available_paintings.append({
+                    'id': painting['id'],
+                    'title': painting['title'],
+                    'reason': related['reason'],
+                    'location_from_painting': related.get('location_from_painting', '')
+                })
+                break
+    
+    # Filter out visited paintings by ID
+    unvisited_paintings = [p for p in available_paintings if p['id'] not in visited_paintings]
+    
+    print("DEBUG - Visited IDs:", visited_paintings)
+    print("DEBUG - Available painting IDs:", [p['id'] for p in available_paintings])
+    print("DEBUG - Unvisited painting IDs:", [p['id'] for p in unvisited_paintings])
+    
+    if not unvisited_paintings:
+        print("DEBUG - No unvisited paintings remaining")
+        return None
+    
+    # Randomly select one unvisited painting
+    selected_painting = random.choice(unvisited_paintings)
+    
+    # Craft the response
+    crafted_response = f"If you enjoyed {painting_details['title']}, I highly recommend viewing '{selected_painting['title']}'. {selected_painting['reason']}"
+    
+    return {
+        'response': crafted_response,
+        'recommended_painting_name': selected_painting['title'],
+        'recommended_painting': {
+            'painting': selected_painting['title'],
+            'location_from_painting': selected_painting['location_from_painting']
+        },
+        'recommended_painting_id': selected_painting['id']
+    }
 
-    Args:
-        painting_id (str): The ID of the painting to recommend.
-        choice (str): The user's choice ("yes" or "no").
-
-    Returns:
-        str: A recommendation for another painting.
-    """
-    prompt = f"""
-    You are an expert art guide. Based on the painting ID, recommend a painting from the related paintings and describe why it relates to their chosen painting.
-    Current painting: {painting_details}
-    Related paintings: {related_paintings}
-
-    Style guide:
-    - Format your response as a JSON array with exactly two elements:
-      - First element: The exact title of the recommended painting
-      - Second element: Your complete recommendation text
-    - Do not include markdown formatting in the response
-
-    Example output:
-    ["The Pardon in Brittany", "Great, 'The Pardon in Brittany' is a painting I think you'd like. Similar to 'Joan of Arc', both paintings are painted in Naturalism and depicts religious ceremonies and events."]
-    """
-    if choice == "yes":
-        try:
-            response = model.generate_content(prompt)
-            response_list = json.loads(response.text.strip())
-            recommended_painting_name = response_list[0]
-            crafted_response = response_list[1]
-            
-            selected_painting = None
-            recommended_id = None
-            
-            # First find the painting in related paintings
-            for painting in related_paintings['related_paintings']:
-                if painting['painting'] == recommended_painting_name:
-                    selected_painting = painting
-                    break
-            
-            # Then find its ID from the full dataset
-            paintings_data = load_dataset()
-            for painting in paintings_data:
-                if painting['title'] == recommended_painting_name:
-                    recommended_id = painting['id']
-                    break
-            
-            crafted_response += "\n\nCould I give you directions to the painting?"
-            
-            return {
-                'response': crafted_response,
-                'recommended_painting_name': recommended_painting_name,
-                'recommended_painting': selected_painting,
-                'recommended_painting_id': recommended_id
-            }
-        except Exception as e:
-            return {
-                'response': f"An error occurred while generating the response: {str(e)}",
-                'recommended_painting': None,
-                'recommended_painting_name': None,
-                'recommended_painting_id': None
-            }
-    if choice == "no":
-        return "Do you have any other questions or can I show you another painting I think you'd like?"
-    else:
-        return "I'm sorry, I didn't understand your choice. Please try again."
-        
 def get_painting_directions(painting_id, recommended_painting_name):   
     """
     Retrieves the directions to the recommended painting from the database.
@@ -293,3 +270,46 @@ def get_painting_directions(painting_id, recommended_painting_name):
                     response = related['location_from_painting'] + "\n\nI'll give you a minute to get there."
                     return response
     return "I'm sorry, I don't have directions to that painting at the moment."
+
+def get_painting_qa(painting_id, question):
+    """
+    Retrieves the answer to a question by grabbing painting details and sending it to the LLM to answer the question.
+    
+    Args:
+        painting_id (str): The ID of the painting being discussed
+        question (str): The user's question about the painting
+        
+    Returns:
+        str: The AI-generated answer to the question
+    """
+    # Get painting details
+    #doesn't work right now
+    painting_details = get_painting_details(painting_id)
+    if not painting_details:
+        return "I'm sorry, I couldn't find information about that painting."
+    
+    prompt = f"""
+    You are an expert art guide. Answer the following question about this painting based on the provided details.
+    Keep your response concise but informative and engaging.
+    
+    Painting Details:
+    - Title: {painting_details['title']}
+    - Artist: {painting_details['artist']}
+    - Visual Description: {painting_details['visual description']}
+    - Narrative: {painting_details['narrative']}
+    
+    Question: {question}
+    
+    Style guide:
+    - Be conversational and friendly
+    - Stick to facts from the provided details
+    - If the question cannot be answered from the provided details, politely say so
+    """
+    
+    try:
+        response = model.generate_content(prompt)
+        return response.text.strip()
+    except Exception as e:
+        return f"I apologize, but I encountered an error while answering your question: {str(e)}"
+
+    
