@@ -6,27 +6,65 @@ import google.generativeai as genai
 from dotenv import load_dotenv
 import os
 import random
+from openai import OpenAI
 
 load_dotenv()
 
+
 class Config:
-    GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
+    GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
     DATASET_PATH = "metdata.json"
+    # BASE_URL = "https://generativelanguage.googleapis.com/v1beta/openai/"
+    # MODEL = "gemini-1.5-flash"
+    BASE_URL = "http://localhost:11434/v1"
+    MODEL = "gemma2:2b"
+
 
 # Initialize Gemini at module level
-genai.configure(api_key=Config.GEMINI_API_KEY)
-model = genai.GenerativeModel('gemini-1.5-pro')
+# genai.configure(api_key=Config.GEMINI_API_KEY)x
+# model = genai.GenerativeModel("gemini-1.5-pro")
 
 DATASET_PATH = Config.DATASET_PATH
 dataset = None
 
+
+class ModelConfig:
+    def __init__(self, model: str, api_key: str, base_url: str):
+        self.model = model
+        self.api_key = api_key
+        self.base_url = base_url
+        self.client = OpenAI(
+            api_key=self.api_key,
+            base_url=self.base_url,
+        )
+
+    def generate_content(self, content: str):
+        system_prompt = """
+    You are an expert art guide. Answer the following question about this painting based on the provided details.
+    Keep your response concise but informative and engaging."""
+        completion = self.client.chat.completions.create(
+            model=self.model,
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": content},
+            ],
+        )
+        return completion.choices[0].message.content
+
+
+model = ModelConfig(
+    model=Config.MODEL, api_key=Config.GEMINI_API_KEY, base_url=Config.BASE_URL
+)
+
+
 def load_dataset():
     global dataset
     if dataset is None:
-        with open(DATASET_PATH, 'r') as f:
+        with open(DATASET_PATH, "r") as f:
             data = json.load(f)
-            dataset = data['paintings']
+            dataset = data["paintings"]
     return dataset
+
 
 def top_matches(user_input, top_k=3):
     """
@@ -39,7 +77,7 @@ def top_matches(user_input, top_k=3):
     Returns:
         list: The top-k closest paintings with their details.
     """
-    paintings_data = load_dataset() 
+    paintings_data = load_dataset()
 
     # Check dataset integrity
     for i, entry in enumerate(paintings_data):
@@ -70,6 +108,7 @@ def top_matches(user_input, top_k=3):
     results = [paintings_data[idx] for idx in indices[0]]
 
     return results
+
 
 def guess_painting(user_input, results):
     """
@@ -108,30 +147,28 @@ def guess_painting(user_input, results):
 
     try:
         response = model.generate_content(prompt)
-        crafted_response = response.text.strip()
-        
+        crafted_response = response.strip()
+
         # Find the matching painting from results based on the response
         selected_painting = None
         for painting in results:
-            if painting['title'].lower() in crafted_response.lower():
+            if painting["title"].lower() in crafted_response.lower():
                 selected_painting = painting
                 break
-        
+
         # Store the painting ID if found
-        painting_id = selected_painting['id'] if selected_painting else None
-        
+        painting_id = selected_painting["id"] if selected_painting else None
+
         crafted_response += " Would you like to know more about it?"
 
         # Return both the response and the painting ID
-        return {
-            'response': crafted_response,
-            'painting_id': painting_id
-        }
+        return {"response": crafted_response, "painting_id": painting_id}
     except Exception as e:
         return {
-            'response': f"An error occurred while generating the response: {str(e)}",
-            'painting_id': None
+            "response": f"An error occurred while generating the response: {str(e)}",
+            "painting_id": None,
         }
+
 
 def get_painting_details(painting_id):
     """
@@ -139,15 +176,16 @@ def get_painting_details(painting_id):
     """
     paintings_data = load_dataset()
     for painting in paintings_data:
-        if painting['id'] == painting_id:
+        if painting["id"] == painting_id:
             painting_details = {
-                'title': painting['title'],
-                'artist': painting['artist'], 
-                'visual description': painting['visual_description'],
-                'narrative': painting['narrative']
+                "title": painting["title"],
+                "artist": painting["artist"],
+                "visual description": painting["visual_description"],
+                "narrative": painting["narrative"],
             }
             return painting_details
     return None
+
 
 def get_painting_response(painting_details):
     """
@@ -185,109 +223,122 @@ def get_painting_response(painting_details):
 
     try:
         response = model.generate_content(prompt)
-        crafted_response = response.text.strip()
+        crafted_response = response.strip()
         crafted_response = crafted_response
         return crafted_response
     except Exception as e:
         return f"An error occurred while generating the response: {str(e)}"
-    
+
+
 def get_related_paintings(painting_id):
     """
     Retrieves related paintings based on the painting ID.
     """
     paintings_data = load_dataset()
     for painting in paintings_data:
-        if painting['id'] == painting_id:
-            related_paintings = {
-                'related_paintings': painting['related_paintings']
-            }
+        if painting["id"] == painting_id:
+            related_paintings = {"related_paintings": painting["related_paintings"]}
             return related_paintings
     return None
 
-def get_painting_recommendation(related_paintings, painting_details, choice, visited_paintings):
+
+def get_painting_recommendation(
+    related_paintings, painting_details, choice, visited_paintings
+):
     # First, get IDs for all related paintings
     paintings_data = load_dataset()
     available_paintings = []
-    
+
     # Build list of available paintings with their IDs
-    for related in related_paintings['related_paintings']:
+    for related in related_paintings["related_paintings"]:
         for painting in paintings_data:
-            if painting['title'].lower() == related['painting'].lower():
-                available_paintings.append({
-                    'id': painting['id'],
-                    'title': painting['title'],
-                    'reason': related['reason'],
-                    'location_from_painting': related.get('location_from_painting', '')
-                })
+            if painting["title"].lower() == related["painting"].lower():
+                available_paintings.append(
+                    {
+                        "id": painting["id"],
+                        "title": painting["title"],
+                        "reason": related["reason"],
+                        "location_from_painting": related.get(
+                            "location_from_painting", ""
+                        ),
+                    }
+                )
                 break
-    
+
     # Filter out visited paintings by ID
-    unvisited_paintings = [p for p in available_paintings if p['id'] not in visited_paintings]
-    
+    unvisited_paintings = [
+        p for p in available_paintings if p["id"] not in visited_paintings
+    ]
+
     print("DEBUG - Visited IDs:", visited_paintings)
-    print("DEBUG - Available painting IDs:", [p['id'] for p in available_paintings])
-    print("DEBUG - Unvisited painting IDs:", [p['id'] for p in unvisited_paintings])
-    
+    print("DEBUG - Available painting IDs:", [p["id"] for p in available_paintings])
+    print("DEBUG - Unvisited painting IDs:", [p["id"] for p in unvisited_paintings])
+
     if not unvisited_paintings:
         print("DEBUG - No unvisited paintings remaining")
         return None
-    
+
     # Randomly select one unvisited painting
     selected_painting = random.choice(unvisited_paintings)
-    
+
     # Craft the response
     crafted_response = f"If you enjoyed {painting_details['title']}, I highly recommend viewing '{selected_painting['title']}'. {selected_painting['reason']}"
-    
+
     return {
-        'response': crafted_response,
-        'recommended_painting_name': selected_painting['title'],
-        'recommended_painting': {
-            'painting': selected_painting['title'],
-            'location_from_painting': selected_painting['location_from_painting']
+        "response": crafted_response,
+        "recommended_painting_name": selected_painting["title"],
+        "recommended_painting": {
+            "painting": selected_painting["title"],
+            "location_from_painting": selected_painting["location_from_painting"],
         },
-        'recommended_painting_id': selected_painting['id']
+        "recommended_painting_id": selected_painting["id"],
     }
 
-def get_painting_directions(painting_id, recommended_painting_name):   
+
+def get_painting_directions(painting_id, recommended_painting_name):
     """
     Retrieves the directions to the recommended painting from the database.
-    
+
     Args:
         painting_id (str): ID of the original painting
         recommended_painting_name (str): Name of the recommended painting
-        
+
     Returns:
         str: Directions to the recommended painting's location, or error message if not found
     """
     paintings_data = load_dataset()
-    
+
     # Find the original painting
     for painting in paintings_data:
-        if painting['id'] == painting_id:
+        if painting["id"] == painting_id:
             # Search through related paintings
-            for related in painting['related_paintings']:
-                if related['painting'].lower() == recommended_painting_name.lower():
-                    response = related['location_from_painting'] + "\n\nI'll give you a minute to get there."
+            for related in painting["related_paintings"]:
+                if related["painting"].lower() == recommended_painting_name.lower():
+                    response = (
+                        related["location_from_painting"]
+                        + "\n\nI'll give you a minute to get there."
+                    )
                     return response
     return "I'm sorry, I don't have directions to that painting at the moment."
+
 
 def get_painting_qa(painting_id, question):
     """
     Retrieves the answer to a question by grabbing painting details and sending it to the LLM to answer the question.
-    
+
     Args:
         painting_id (str): The ID of the painting being discussed
         question (str): The user's question about the painting
-        
+
     Returns:
         str: The AI-generated answer to the question
     """
     # Get painting details
-    #doesn't work right now
+    # doesn't work right now
     painting_details = get_painting_details(painting_id)
     if not painting_details:
         return "I'm sorry, I couldn't find information about that painting."
-    
+
     prompt = f"""
     You are an expert art guide. Answer the following question about this painting based on the provided details.
     Keep your response concise but informative and engaging.
@@ -305,11 +356,9 @@ def get_painting_qa(painting_id, question):
     - Stick to facts from the provided details
     - If the question cannot be answered from the provided details, politely say so
     """
-    
+
     try:
         response = model.generate_content(prompt)
-        return response.text.strip()
+        return response.strip()
     except Exception as e:
         return f"I apologize, but I encountered an error while answering your question: {str(e)}"
-
-    
