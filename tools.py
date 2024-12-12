@@ -7,8 +7,10 @@ from dotenv import load_dotenv
 import os
 import random
 from openai import OpenAI
+import time
 
 load_dotenv()
+from transformers import AutoTokenizer
 
 
 class Config:
@@ -18,6 +20,8 @@ class Config:
     # MODEL = "gemini-1.5-flash"
     BASE_URL = "http://localhost:11434/v1"
     MODEL = "gemma2:2b"
+    # TOKENIZER = AutoTokenizer.from_pretrained("/kaggle/input/gemma/transformers/2b/1")
+    TOKENIZER = AutoTokenizer.from_pretrained("google/gemma-2-2b")
 
 
 # Initialize Gemini at module level
@@ -26,6 +30,14 @@ class Config:
 
 DATASET_PATH = Config.DATASET_PATH
 dataset = None
+
+
+def count_tokens(input_text):
+    # Tokenize input text
+    tokens = Config.TOKENIZER.tokenize(input_text)
+    # Count the number of tokens
+    num_tokens = len(tokens)
+    return num_tokens
 
 
 class ModelConfig:
@@ -38,18 +50,95 @@ class ModelConfig:
             base_url=self.base_url,
         )
 
+    # def generate_content(self, content: str):
+    #     system_prompt = """
+    # You are an expert art guide. Answer the following question about this painting based on the provided details.
+    # Keep your response concise but informative and engaging."""
+    #     start_time = time.time()
+    #     completion = self.client.chat.completions.create(
+    #         model=self.model,
+    #         messages=[
+    #             {"role": "system", "content": system_prompt},
+    #             {"role": "user", "content": content},
+    #         ],
+    #         stream=True,
+    #     )
+    #     # return completion.choices[0].message.content
+    #     collected_messages = []
+    #     total_time = 0
+    #     time_to_first_token = 0
+    #     for chunk in completion:
+    #         chunk_time = time.time() - start_time
+    #         if total_time == 0:
+    #             time_to_first_token = chunk_time
+    #         total_time += chunk_time
+    #         if chunk.choices[0].delta.content is not None:
+    #             chunk_text = chunk.choices[0].delta.content
+    #             collected_messages.append(chunk_text)
+    #             print(chunk_text)
+
+    #     print(f"Time to first token: {time_to_first_token}")
+    #     # print(f"Total time for output: {chunk_time}")
+    #     return "".join(collected_messages)
     def generate_content(self, content: str):
         system_prompt = """
-    You are an expert art guide. Answer the following question about this painting based on the provided details.
-    Keep your response concise but informative and engaging."""
+        You are an expert art guide. Answer the following question about this painting based on the provided details.
+        Keep your response concise but informative and engaging."""
+
+        start_time = time.time()
         completion = self.client.chat.completions.create(
             model=self.model,
             messages=[
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": content},
             ],
+            stream=True,
         )
-        return completion.choices[0].message.content
+
+        collected_messages = []
+        latencies = []  # To store (input tokens, output tokens, latency)
+        num_output_tokens = 0  # Total number of output tokens
+        time_to_first_token = 0  # Time to first token
+
+        for chunk in completion:
+            chunk_time = time.time() - start_time
+
+            # Capture time to first token
+            if len(latencies) == 0:
+                time_to_first_token = chunk_time
+
+            # Extract content if present
+            if chunk.choices[0].delta.content is not None:
+                chunk_text = chunk.choices[0].delta.content
+                collected_messages.append(chunk_text)
+                # num_output_tokens += 1  # Increment token count
+                num_output_tokens += len(Config.TOKENIZER.tokenize(chunk_text))
+                latencies.append(chunk_time)  # Log the time for each token
+
+                print(chunk_text)
+
+        total_time = (
+            latencies[-1] if latencies else 0
+        )  # Total latency (last token's time)
+        time_per_output_token = (
+            (latencies[-1] - latencies[0]) / (len(latencies) - 1)
+            if len(latencies) > 1
+            else 0
+        )
+        num_total_output_tokens = len(
+            Config.TOKENIZER.tokenize("".join(collected_messages))
+        )
+        print("Total number of output tokens:", num_total_output_tokens)
+        # throughput = num_output_tokens / total_time if total_time > 0 else 0
+        throughput = num_total_output_tokens / total_time if total_time > 0 else 0
+
+        # Print metrics
+        print(f"Time to first token (s): {round(time_to_first_token, 2)}")
+        print(f"Total time for output (s): {round(total_time, 2)}")
+        print(f"Time per output token (ms): {round(time_per_output_token * 1000, 2)}")
+        print(f"Throughput (tokens/sec): {round(throughput, 2)}")
+
+        return "".join(collected_messages)
 
 
 model = ModelConfig(
