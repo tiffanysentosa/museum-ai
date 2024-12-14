@@ -22,6 +22,10 @@ class Config:
     MODEL = "gemma2:2b"
     # TOKENIZER = AutoTokenizer.from_pretrained("/kaggle/input/gemma/transformers/2b/1")
     TOKENIZER = AutoTokenizer.from_pretrained("google/gemma-2-2b")
+    CLIENT = OpenAI(
+        api_key=GEMINI_API_KEY,
+        base_url=BASE_URL,
+    )
 
 
 # Initialize Gemini at module level
@@ -45,10 +49,7 @@ class ModelConfig:
         self.model = model
         self.api_key = api_key
         self.base_url = base_url
-        self.client = OpenAI(
-            api_key=self.api_key,
-            base_url=self.base_url,
-        )
+        self.client = Config.CLIENT
 
     # def generate_content(self, content: str):
     #     system_prompt = """
@@ -144,6 +145,78 @@ class ModelConfig:
 model = ModelConfig(
     model=Config.MODEL, api_key=Config.GEMINI_API_KEY, base_url=Config.BASE_URL
 )
+
+
+def interpret_user_response(user_input, context=None):
+    """
+    Use the LLM to interpret user input and determine intent.
+
+    Args:
+        user_input (str): User's raw input
+        context (dict, optional): Additional context about the current interaction
+
+    Returns:
+        dict: Interpreted response with intent and details
+    """
+    try:
+        # Create a context-aware prompt to interpret user intent
+        prompt = f"""You are an AI assistant in an art gallery, helping a visitor navigate and understand paintings.
+        Interpret the following user input and determine the intent:
+
+        User Input: "{user_input}"
+        
+        Possible Intents:
+        1. Affirmative (wants to proceed)
+        2. Negative (wants to stop or decline)
+       
+
+        Provide a JSON response with the following structure:
+        {{
+            "intent": "...", # One of the intents above
+            "confidence": 0.0, # Confidence level (0.0 to 1.0)
+            "explanation": "...", # Brief explanation of how you interpreted the input
+        }}
+        
+        Context (if available): {context}
+        """
+
+        # Generate response
+
+        completion = Config.CLIENT.chat.completions.create(
+            model=Config.MODEL,
+            response_format={"type": "json_object"},
+            messages=[
+                {"role": "system", "content": prompt},
+                {"role": "user", "content": user_input},
+            ],
+            max_tokens=300,  # Limit response length
+        )
+
+        # Extract and parse the response
+        response_text = completion.choices[0].message.content
+
+        try:
+            # Attempt to parse the JSON response
+            interpretation = json.loads(response_text)
+            print("INTERPRETATION", interpretation)
+            return interpretation
+        except json.JSONDecodeError:
+            # Fallback to a default interpretation
+            return {
+                "intent": "unclear",
+                "confidence": 0.5,
+                "explanation": "Could not parse the exact intent",
+                "next_action": "ask_for_clarification",
+            }
+
+    except Exception as e:
+        print(f"Error in interpreting response: {e}")
+        return {
+            "intent": "error",
+            "confidence": 0.0,
+            "explanation": "Error in processing user input",
+            "next_action": "restart",
+        }
 
 
 def load_dataset():
@@ -259,7 +332,7 @@ def guess_painting(user_input, results):
         }
 
 
-def get_painting_details(painting_id):
+def get_painting_details(painting_id, context=None):
     """
     Retrieves the details of a painting from the database based on its ID.
     """
@@ -269,14 +342,17 @@ def get_painting_details(painting_id):
             painting_details = {
                 "title": painting["title"],
                 "artist": painting["artist"],
+                "year": painting["year"],
                 "visual description": painting["visual_description"],
                 "narrative": painting["narrative"],
             }
+            if context:
+                return painting_details, context
             return painting_details
     return None
 
 
-def get_painting_response(painting_details):
+def get_painting_response(painting_details, context=None):
     """
     Generates a response to the user based on the painting details.
 
@@ -297,6 +373,7 @@ def get_painting_response(painting_details):
     Painting Details:
     - Title: {painting_details['title']}
     - Artist: {painting_details['artist']}
+    - Year: {painting_details['year']}
     - Visual Description: {painting_details['visual description']}
     - Narrative: {painting_details['narrative']}
 
@@ -308,6 +385,9 @@ def get_painting_response(painting_details):
     Through this work, Frederic bridges the honesty of Realist domestic scenes with a spiritual undertone, offering a poignant glimpse into the timeless significance of familial connections.
 
     Use a similar tone and style. Highlight the painting's key visual elements, symbolic meaning, and narrative context. Keep the response concise but descriptive.
+
+    Limit the response to the Context (if available): {context}
+
     """
 
     try:
