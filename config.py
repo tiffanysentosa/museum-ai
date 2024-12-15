@@ -14,7 +14,7 @@ class Config:
             # )
             # cls._instance.MODEL = "gemini-1.5-flash"
             cls._instance.BASE_URL = "http://localhost:11434/v1"
-            cls._instance.MODEL = "qwen2.5:0.5b-instruct"
+            cls._instance.MODEL = "qwen2.5:0.5b"
             # cls._instance.MODEL = "gemma2:2b"
             cls._instance.TOKENIZER = None  # Placeholder for tokenizer
             cls._instance.CLIENT = None

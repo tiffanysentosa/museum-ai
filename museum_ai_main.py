@@ -295,7 +295,7 @@ if __name__ == "__main__":
     # base_url = ("https://generativelanguage.googleapis.com/v1beta/openai/",)
     # base_model = ("gemini-1.5-flash",)
     base_url = "http://localhost:11434/v1"
-    base_model = "qwen2.5:0.5b-instruct"
+    base_model = "qwen2.5:0.5b"
     # base_model = "gemma2:2b"
     # Update configuration values
     config_update_params = {
@@ -304,7 +304,7 @@ if __name__ == "__main__":
         "base_url": base_url,
         "model": base_model,
         # "tokenizer": AutoTokenizer.from_pretrained("google/gemma-2-2b"),
-        "tokenizer": AutoTokenizer.from_pretrained("Qwen/Qwen2.5-0.5B-Instruct"),
+        "tokenizer": AutoTokenizer.from_pretrained("Qwen/Qwen2.5-0.5B"),
         "CLIENT": OpenAI(
             api_key=os.environ["GEMINI_API_KEY"],
             base_url=base_url,
