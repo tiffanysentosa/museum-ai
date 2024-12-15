@@ -2,7 +2,8 @@ import faiss
 import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
 import json
-import google.generativeai as genai
+
+# import google.generativeai as genai
 from dotenv import load_dotenv
 import os
 import random

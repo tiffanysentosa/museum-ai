@@ -2,7 +2,8 @@ import json
 import streamlit as st
 import sys
 import os
-import google.generativeai as genai
+
+# import google.generativeai as genai
 import time
 from openai import OpenAI
 from config import Config
