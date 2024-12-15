@@ -363,18 +363,20 @@ def main():
 if __name__ == "__main__":
     config = Config()
 
+    # base_url="https://generativelanguage.googleapis.com/v1beta/openai/",
+    # model="gemini-1.5-flash",
+    base_url = "http://localhost:11434/v1"
+    model = "gemma2:2b"
     # Update configuration values
     config.update_config(
         api_key=os.environ["GEMINI_API_KEY"],
         dataset_path="metdata.json",
-        # base_url="https://generativelanguage.googleapis.com/v1beta/openai/",
-        # model="gemini-1.5-flash",
-        base_url="http://localhost:11434/v1",
-        model="gemma2:2b",
+        base_url=base_url,
+        model=model,
         tokenizer=AutoTokenizer.from_pretrained("google/gemma-2-2b"),
         CLIENT=OpenAI(
             api_key=os.environ["GEMINI_API_KEY"],
-            base_url="https://generativelanguage.googleapis.com/v1beta/openai/",
+            base_url=base_url,
         ),
     )
     main()
