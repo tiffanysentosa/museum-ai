@@ -16,10 +16,10 @@ from transformers import AutoTokenizer
 class Config:
     GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
     DATASET_PATH = "metdata.json"
-    # BASE_URL = "https://generativelanguage.googleapis.com/v1beta/openai/"
-    # MODEL = "gemini-1.5-flash"
-    BASE_URL = "http://localhost:11434/v1"
-    MODEL = "gemma2:2b"
+    BASE_URL = "https://generativelanguage.googleapis.com/v1beta/openai/"
+    MODEL = "gemini-1.5-flash"
+    # BASE_URL = "http://localhost:11434/v1"
+    # MODEL = "gemma2:2b"
     # TOKENIZER = AutoTokenizer.from_pretrained("/kaggle/input/gemma/transformers/2b/1")
     TOKENIZER = AutoTokenizer.from_pretrained("google/gemma-2-2b")
     CLIENT = OpenAI(
@@ -386,7 +386,7 @@ def get_painting_response(painting_details, context=None):
 
     Use a similar tone and style. Highlight the painting's key visual elements, symbolic meaning, and narrative context. Keep the response concise but descriptive.
 
-    Limit the response to the Context (if available): {context}
+    Limit the response to the what the user asks for (if available): {context}
 
     """
 
