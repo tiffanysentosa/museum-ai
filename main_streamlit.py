@@ -363,7 +363,7 @@ def main():
 if __name__ == "__main__":
     config = Config()
 
-    base_url = ("https://generativelanguage.googleapis.com/v1beta/openai/",)
+    base_url = "https://generativelanguage.googleapis.com/v1beta/openai/"
     base_model = ("gemini-1.5-flash",)
     # base_url = "http://localhost:11434/v1"
     # base_model = "gemma2:2b"
