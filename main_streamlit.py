@@ -11,6 +11,9 @@ from tools import (
     get_painting_qa,
     interpret_user_response,
 )
+from openai import OpenAI
+from config import Config
+from transformers import AutoTokenizer
 
 
 def init_session_state():
@@ -94,7 +97,7 @@ def main():
             st.session_state.messages.append(
                 {
                     "role": "assistant",
-                    "content": "Would you like to know more about this painting? (yes/no)",
+                    "content": "Would you like to know more about this painting?",
                 }
             )
 
@@ -152,7 +155,7 @@ def main():
                 st.session_state.messages.append(
                     {
                         "role": "assistant",
-                        "content": "Could I recommend another painting I think you'd like? (yes/no)",
+                        "content": "Could I recommend another painting I think you'd like?",
                     }
                 )
 
@@ -184,7 +187,7 @@ def main():
                 st.session_state.messages.append(
                     {
                         "role": "assistant",
-                        "content": "Could I recommend another painting I think you'd like? (yes/no)",
+                        "content": "Could I recommend another painting I think you'd like?",
                     }
                 )
             # elif user_input.lower() == "yes":
@@ -212,7 +215,7 @@ def main():
                     st.session_state.messages.append(
                         {
                             "role": "assistant",
-                            "content": "Would you like directions to this painting? (yes/no)",
+                            "content": "Would you like directions to this painting?",
                         }
                     )
                     st.session_state.recommendation = recommendation
@@ -221,7 +224,7 @@ def main():
                     st.session_state.messages.append(
                         {
                             "role": "assistant",
-                            "content": "I'm sorry, I couldn't find any new recommendations. Would you like to find a different painting? (yes/no)",
+                            "content": "I'm sorry, I couldn't find any new recommendations. Would you like to find a different painting?",
                         }
                     )
                     st.session_state.stage = "find_different"
@@ -246,7 +249,7 @@ def main():
                 st.session_state.messages.append(
                     {
                         "role": "assistant",
-                        "content": f"{directions}\n\nDo you see the painting? (yes/no)",
+                        "content": f"{directions}\n\nDo you see the painting?",
                     }
                 )
                 st.session_state.stage = "found_painting"
@@ -255,7 +258,7 @@ def main():
                 st.session_state.messages.append(
                     {
                         "role": "assistant",
-                        "content": "Would you like me to recommend another related painting? (yes/no)",
+                        "content": "Would you like me to recommend another related painting?",
                     }
                 )
                 st.session_state.stage = "want_recommendation"
@@ -278,7 +281,7 @@ def main():
                 st.session_state.messages.append(
                     {
                         "role": "assistant",
-                        "content": "Would you like to know more about this painting? (yes/no)",
+                        "content": "Would you like to know more about this painting?",
                     }
                 )
             # elif user_input.lower() == "no":
@@ -286,7 +289,7 @@ def main():
                 st.session_state.messages.append(
                     {
                         "role": "assistant",
-                        "content": "Let me give you more detailed directions. Feel free to ask a gallery attendant! Would you like to try finding it again? (yes/no)",
+                        "content": "Let me give you more detailed directions. Feel free to ask a gallery attendant! Would you like to try finding it again?",
                     }
                 )
                 st.session_state.stage = "try_again"
@@ -302,7 +305,7 @@ def main():
                 st.session_state.messages.append(
                     {
                         "role": "assistant",
-                        "content": f"{directions}\n\nDo you see the painting? (yes/no)",
+                        "content": f"{directions}\n\nDo you see the painting?",
                     }
                 )
                 st.session_state.stage = "found_painting"
@@ -311,7 +314,7 @@ def main():
                 st.session_state.messages.append(
                     {
                         "role": "assistant",
-                        "content": "Would you like me to recommend another related painting? (yes/no)",
+                        "content": "Would you like me to recommend another related painting?",
                     }
                 )
                 st.session_state.stage = "want_recommendation"
@@ -358,4 +361,20 @@ def main():
 
 
 if __name__ == "__main__":
+    config = Config()
+
+    # Update configuration values
+    config.update_config(
+        api_key=os.environ["GEMINI_API_KEY"],
+        dataset_path="metdata.json",
+        # base_url="https://generativelanguage.googleapis.com/v1beta/openai/",
+        # model="gemini-1.5-flash",
+        base_url="http://localhost:11434/v1",
+        model="gemma2:2b",
+        tokenizer=AutoTokenizer.from_pretrained("google/gemma-2-2b"),
+        CLIENT=OpenAI(
+            api_key=os.environ["GEMINI_API_KEY"],
+            base_url="https://generativelanguage.googleapis.com/v1beta/openai/",
+        ),
+    )
     main()
