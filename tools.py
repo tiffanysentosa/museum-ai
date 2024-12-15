@@ -143,7 +143,7 @@ class ModelConfig:
 
     #     return "".join(collected_messages)
     def generate_content(
-        self, content: str, user_input, csv_file="gemini_metrics_log.csv"
+        self, content: str, user_input, csv_file="qwen_metrics_log.csv"
     ):
         system_prompt = """
         You are an expert art guide. Answer the following question about this painting based on the provided details.
@@ -297,7 +297,7 @@ model = ModelConfig(
 
 
 def interpret_user_response(
-    user_input, context=None, csv_file="gemini_interpretation_log.csv"
+    user_input, context=None, csv_file="qwen_interpretation_log.csv"
 ):
     """
     Use the LLM to interpret user input and determine intent.
