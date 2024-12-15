@@ -9,10 +9,11 @@ class Config:
             cls._instance = super().__new__(cls)
             cls._instance.GEMINI_API_KEY = "default_api_key"
             cls._instance.DATASET_PATH = "metdata.json"
-            cls._instance.BASE_URL = (
-                "https://generativelanguage.googleapis.com/v1beta/openai/"
-            )
-            cls._instance.MODEL = "gemini-1.5-flash"
+            # cls._instance.BASE_URL = (
+            #     "https://generativelanguage.googleapis.com/v1beta/openai/"
+            # )
+            cls._instance.BASE_URL = "http://localhost:11434/v1"
+            cls._instance.MODEL = "gemma2:2b"
             cls._instance.TOKENIZER = None  # Placeholder for tokenizer
             cls._instance.CLIENT = None
         return cls._instance
