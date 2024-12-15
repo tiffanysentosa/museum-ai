@@ -142,7 +142,9 @@ class ModelConfig:
     #     print(f"Throughput (tokens/sec): {round(throughput, 2)}")
 
     #     return "".join(collected_messages)
-    def generate_content(self, content: str, user_input, csv_file="metrics_log.csv"):
+    def generate_content(
+        self, content: str, user_input, csv_file="gemini_metrics_log.csv"
+    ):
         system_prompt = """
         You are an expert art guide. Answer the following question about this painting based on the provided details.
         Keep your response concise but informative and engaging."""
@@ -295,7 +297,7 @@ model = ModelConfig(
 
 
 def interpret_user_response(
-    user_input, context=None, csv_file="interpretation_log.csv"
+    user_input, context=None, csv_file="gemini_interpretation_log.csv"
 ):
     """
     Use the LLM to interpret user input and determine intent.
