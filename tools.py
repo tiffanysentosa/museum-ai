@@ -8,29 +8,30 @@ import os
 import random
 from openai import OpenAI
 import time
+import csv
 
 load_dotenv()
 from transformers import AutoTokenizer
+from config import Config
+
+# Access the singleton instance of Config
+Config = Config()
 
 
-class Config:
-    GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
-    DATASET_PATH = "metdata.json"
-    BASE_URL = "https://generativelanguage.googleapis.com/v1beta/openai/"
-    MODEL = "gemini-1.5-flash"
-    # BASE_URL = "http://localhost:11434/v1"
-    # MODEL = "gemma2:2b"
-    # TOKENIZER = AutoTokenizer.from_pretrained("/kaggle/input/gemma/transformers/2b/1")
-    TOKENIZER = AutoTokenizer.from_pretrained("google/gemma-2-2b")
-    CLIENT = OpenAI(
-        api_key=GEMINI_API_KEY,
-        base_url=BASE_URL,
-    )
+# class Config:
+#     GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+#     DATASET_PATH = "metdata.json"
+#     BASE_URL = "https://generativelanguage.googleapis.com/v1beta/openai/"
+#     MODEL = "gemini-1.5-flash"
+#     # BASE_URL = "http://localhost:11434/v1"
+#     # MODEL = "gemma2:2b"
+#     # TOKENIZER = AutoTokenizer.from_pretrained("/kaggle/input/gemma/transformers/2b/1")
+#     TOKENIZER = AutoTokenizer.from_pretrained("google/gemma-2-2b")
+#     CLIENT = OpenAI(
+#         api_key=GEMINI_API_KEY,
+#         base_url=BASE_URL,
+#     )
 
-
-# Initialize Gemini at module level
-# genai.configure(api_key=Config.GEMINI_API_KEY)x
-# model = genai.GenerativeModel("gemini-1.5-pro")
 
 DATASET_PATH = Config.DATASET_PATH
 dataset = None
@@ -49,7 +50,7 @@ class ModelConfig:
         self.model = model
         self.api_key = api_key
         self.base_url = base_url
-        self.client = Config.CLIENT
+        # self.client = Config.CLIENT
 
     # def generate_content(self, content: str):
     #     system_prompt = """
@@ -81,13 +82,72 @@ class ModelConfig:
     #     print(f"Time to first token: {time_to_first_token}")
     #     # print(f"Total time for output: {chunk_time}")
     #     return "".join(collected_messages)
-    def generate_content(self, content: str):
+    # def generate_content(self, content: str):
+    #     system_prompt = """
+    #     You are an expert art guide. Answer the following question about this painting based on the provided details.
+    #     Keep your response concise but informative and engaging."""
+
+    #     start_time = time.time()
+    #     completion = Config.CLIENT.chat.completions.create(
+    #         model=self.model,
+    #         messages=[
+    #             {"role": "system", "content": system_prompt},
+    #             {"role": "user", "content": content},
+    #         ],
+    #         stream=True,
+    #     )
+
+    #     collected_messages = []
+    #     latencies = []  # To store (input tokens, output tokens, latency)
+    #     num_output_tokens = 0  # Total number of output tokens
+    #     time_to_first_token = 0  # Time to first token
+
+    #     for chunk in completion:
+    #         chunk_time = time.time() - start_time
+
+    #         # Capture time to first token
+    #         if len(latencies) == 0:
+    #             time_to_first_token = chunk_time
+
+    #         # Extract content if present
+    #         if chunk.choices[0].delta.content is not None:
+    #             chunk_text = chunk.choices[0].delta.content
+    #             collected_messages.append(chunk_text)
+    #             # num_output_tokens += 1  # Increment token count
+    #             num_output_tokens += len(Config.TOKENIZER.tokenize(chunk_text))
+    #             latencies.append(chunk_time)  # Log the time for each token
+
+    #             print(chunk_text)
+
+    #     total_time = (
+    #         latencies[-1] if latencies else 0
+    #     )  # Total latency (last token's time)
+    #     time_per_output_token = (
+    #         (latencies[-1] - latencies[0]) / (len(latencies) - 1)
+    #         if len(latencies) > 1
+    #         else 0
+    #     )
+    #     num_total_output_tokens = len(
+    #         Config.TOKENIZER.tokenize("".join(collected_messages))
+    #     )
+    #     print("Total number of output tokens:", num_total_output_tokens)
+    #     # throughput = num_output_tokens / total_time if total_time > 0 else 0
+    #     throughput = num_total_output_tokens / total_time if total_time > 0 else 0
+
+    #     # Print metrics
+    #     print(f"Time to first token (s): {round(time_to_first_token, 2)}")
+    #     print(f"Total time for output (s): {round(total_time, 2)}")
+    #     print(f"Time per output token (ms): {round(time_per_output_token * 1000, 2)}")
+    #     print(f"Throughput (tokens/sec): {round(throughput, 2)}")
+
+    #     return "".join(collected_messages)
+    def generate_content(self, content: str, user_input, csv_file="metrics_log.csv"):
         system_prompt = """
         You are an expert art guide. Answer the following question about this painting based on the provided details.
         Keep your response concise but informative and engaging."""
 
         start_time = time.time()
-        completion = self.client.chat.completions.create(
+        completion = Config.CLIENT.chat.completions.create(
             model=self.model,
             messages=[
                 {"role": "system", "content": system_prompt},
@@ -112,9 +172,8 @@ class ModelConfig:
             if chunk.choices[0].delta.content is not None:
                 chunk_text = chunk.choices[0].delta.content
                 collected_messages.append(chunk_text)
-                # num_output_tokens += 1  # Increment token count
                 num_output_tokens += len(Config.TOKENIZER.tokenize(chunk_text))
-                latencies.append(chunk_time)  # Log the time for each token
+                latencies.append(chunk_time)
 
                 print(chunk_text)
 
@@ -129,8 +188,6 @@ class ModelConfig:
         num_total_output_tokens = len(
             Config.TOKENIZER.tokenize("".join(collected_messages))
         )
-        print("Total number of output tokens:", num_total_output_tokens)
-        # throughput = num_output_tokens / total_time if total_time > 0 else 0
         throughput = num_total_output_tokens / total_time if total_time > 0 else 0
 
         # Print metrics
@@ -138,6 +195,23 @@ class ModelConfig:
         print(f"Total time for output (s): {round(total_time, 2)}")
         print(f"Time per output token (ms): {round(time_per_output_token * 1000, 2)}")
         print(f"Throughput (tokens/sec): {round(throughput, 2)}")
+
+        # Write metrics to a CSV file
+        metrics = {
+            "input": user_input,
+            "time_to_first_token": round(time_to_first_token, 2),
+            "total_time": round(total_time, 2),
+            "time_per_output_token": round(time_per_output_token * 1000, 2),
+            "throughput": round(throughput, 2),
+            "num_total_output_tokens": num_total_output_tokens,
+        }
+
+        file_exists = os.path.isfile(csv_file)
+        with open(csv_file, mode="a", newline="") as file:
+            writer = csv.DictWriter(file, fieldnames=metrics.keys())
+            if not file_exists:
+                writer.writeheader()  # Write the header if file is new
+            writer.writerow(metrics)  # Append the metrics
 
         return "".join(collected_messages)
 
@@ -147,13 +221,88 @@ model = ModelConfig(
 )
 
 
-def interpret_user_response(user_input, context=None):
+# def interpret_user_response(user_input, context=None):
+#     """
+#     Use the LLM to interpret user input and determine intent.
+
+#     Args:
+#         user_input (str): User's raw input
+#         context (dict, optional): Additional context about the current interaction
+
+#     Returns:
+#         dict: Interpreted response with intent and details
+#     """
+#     try:
+#         # Create a context-aware prompt to interpret user intent
+#         prompt = f"""You are an AI assistant in an art gallery, helping a visitor navigate and understand paintings.
+#         Interpret the following user input and determine the intent:
+
+#         User Input: "{user_input}"
+
+#         Possible Intents:
+#         1. Affirmative (wants to proceed)
+#         2. Negative (wants to stop or decline)
+
+
+#         Provide a JSON response with the following structure:
+#         {{
+#             "intent": "...", # One of the intents above
+#             "confidence": 0.0, # Confidence level (0.0 to 1.0)
+#             "explanation": "...", # Brief explanation of how you interpreted the input
+#         }}
+
+#         Context (if available): {context}
+#         """
+
+#         # Generate response
+#         start_time = time.time()
+#         completion = Config.CLIENT.chat.completions.create(
+#             model=Config.MODEL,
+#             response_format={"type": "json_object"},
+#             messages=[
+#                 {"role": "system", "content": prompt},
+#                 {"role": "user", "content": user_input},
+#             ],
+#             max_tokens=300,  # Limit response length
+#         )
+#         response_time = time.time() - start_time
+#         print(f"Time to interpret user's decision: {response_time:.2f}s")
+
+#         # Extract and parse the response
+#         response_text = completion.choices[0].message.content
+
+#         try:
+#             # Attempt to parse the JSON response
+#             interpretation = json.loads(response_text)
+#             print("INTERPRETATION", interpretation)
+#             return interpretation
+#         except json.JSONDecodeError:
+#             # Fallback to a default interpretation
+#             return {
+#                 "intent": "unclear",
+#                 "confidence": 0.5,
+#                 "explanation": "Could not parse the exact intent",
+#             }
+
+#     except Exception as e:
+#         print(f"Error in interpreting response: {e}")
+#         return {
+#             "intent": "error",
+#             "confidence": 0.0,
+#             "explanation": "Error in processing user input",
+#         }
+
+
+def interpret_user_response(
+    user_input, context=None, csv_file="interpretation_log.csv"
+):
     """
     Use the LLM to interpret user input and determine intent.
 
     Args:
         user_input (str): User's raw input
         context (dict, optional): Additional context about the current interaction
+        csv_file (str): Path to the CSV file where metrics will be logged
 
     Returns:
         dict: Interpreted response with intent and details
@@ -168,8 +317,7 @@ def interpret_user_response(user_input, context=None):
         Possible Intents:
         1. Affirmative (wants to proceed)
         2. Negative (wants to stop or decline)
-       
-
+        
         Provide a JSON response with the following structure:
         {{
             "intent": "...", # One of the intents above
@@ -180,8 +328,10 @@ def interpret_user_response(user_input, context=None):
         Context (if available): {context}
         """
 
-        # Generate response
+        # Record start time for response generation
+        start_time = time.time()
 
+        # Generate response from the LLM
         completion = Config.CLIENT.chat.completions.create(
             model=Config.MODEL,
             response_format={"type": "json_object"},
@@ -192,6 +342,10 @@ def interpret_user_response(user_input, context=None):
             max_tokens=300,  # Limit response length
         )
 
+        # Measure response time
+        response_time = time.time() - start_time
+        print(f"Time to interpret user's decision: {response_time:.2f}s")
+
         # Extract and parse the response
         response_text = completion.choices[0].message.content
 
@@ -199,15 +353,30 @@ def interpret_user_response(user_input, context=None):
             # Attempt to parse the JSON response
             interpretation = json.loads(response_text)
             print("INTERPRETATION", interpretation)
-            return interpretation
         except json.JSONDecodeError:
-            # Fallback to a default interpretation
-            return {
+            # Fallback to a default interpretation if JSON parsing fails
+            interpretation = {
                 "intent": "unclear",
                 "confidence": 0.5,
                 "explanation": "Could not parse the exact intent",
-                "next_action": "ask_for_clarification",
             }
+
+        # Prepare metrics for logging
+        metrics = {
+            "user_input": user_input,
+            "llm_output": interpretation["explanation"],
+            "response_time": round(response_time, 2),
+        }
+
+        # Log metrics to CSV file
+        file_exists = os.path.isfile(csv_file)
+        with open(csv_file, mode="a", newline="") as file:
+            writer = csv.DictWriter(file, fieldnames=metrics.keys())
+            if not file_exists:
+                writer.writeheader()  # Write the header if the file is new
+            writer.writerow(metrics)  # Append the metrics
+
+        return interpretation
 
     except Exception as e:
         print(f"Error in interpreting response: {e}")
@@ -215,7 +384,6 @@ def interpret_user_response(user_input, context=None):
             "intent": "error",
             "confidence": 0.0,
             "explanation": "Error in processing user input",
-            "next_action": "restart",
         }
 
 
@@ -308,7 +476,7 @@ def guess_painting(user_input, results):
     """
 
     try:
-        response = model.generate_content(prompt)
+        response = model.generate_content(prompt, user_input)
         crafted_response = response.strip()
 
         # Find the matching painting from results based on the response
@@ -391,7 +559,9 @@ def get_painting_response(painting_details, context=None):
     """
 
     try:
-        response = model.generate_content(prompt)
+        response = model.generate_content(
+            prompt, f"painting details summary with context: {context}"
+        )
         crafted_response = response.strip()
         crafted_response = crafted_response
         return crafted_response
@@ -527,7 +697,7 @@ def get_painting_qa(painting_id, question):
     """
 
     try:
-        response = model.generate_content(prompt)
+        response = model.generate_content(prompt, question)
         return response.strip()
     except Exception as e:
         return f"I apologize, but I encountered an error while answering your question: {str(e)}"

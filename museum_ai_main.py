@@ -5,13 +5,8 @@ import os
 import google.generativeai as genai
 import time
 from openai import OpenAI
-
-
-class Config:
-    GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
-    SENTENCE_TRANSFORMER_MODEL = "all-MiniLM-L6-v2"
-    FAISS_INDEX_PATH = "paintings_index.faiss"
-    METADATA_PATH = "metdata.json"
+from config import Config
+from transformers import AutoTokenizer
 
 
 # Ensure the directory containing tools.py is in the Python path
@@ -125,10 +120,10 @@ def handle_painting_qa(painting_id):
             # Interpret the question's intent
             interpretation = interpret_user_response(question, context)
 
-            if interpretation["intent"].lower() == "question":
+            if "affirmative" in interpretation["intent"].lower():
                 question_answer = get_painting_qa(painting_id, question)
                 print(question_answer)
-            elif interpretation["intent"].lower() == "negative":
+            elif "negative" in interpretation["intent"].lower():
                 break
 
             # Ask if they want to continue asking questions
@@ -294,7 +289,19 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    config = Config()
 
-# Note: Ensure you have all previous imported functions from tools.py
-# This code assumes the existence of process_painting_description() from the original script
+    # Update configuration values
+    config.update_config(
+        api_key=os.environ["GEMINI_API_KEY"],
+        dataset_path="metdata.json",
+        base_url="https://generativelanguage.googleapis.com/v1beta/openai/",
+        model="gemini-1.5-flash",
+        tokenizer=AutoTokenizer.from_pretrained("google/gemma-2-2b"),
+        CLIENT=OpenAI(
+            api_key=os.environ["GEMINI_API_KEY"],
+            base_url="https://generativelanguage.googleapis.com/v1beta/openai/",
+        ),
+    )
+
+    main()
