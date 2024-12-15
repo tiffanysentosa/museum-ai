@@ -198,7 +198,7 @@ class ModelConfig:
         print(f"Total time for output (s): {round(total_time, 2)}")
         print(f"Time per output token (ms): {round(time_per_output_token * 1000, 2)}")
         print(f"Throughput (tokens/sec): {round(throughput, 2)}")
-
+        str_collected_messages = "".join(collected_messages)
         # Write metrics to a CSV file
         metrics = {
             "input": user_input,
@@ -207,6 +207,7 @@ class ModelConfig:
             "time_per_output_token": round(time_per_output_token * 1000, 2),
             "throughput": round(throughput, 2),
             "num_total_output_tokens": num_total_output_tokens,
+            "llm_output": str_collected_messages,
         }
 
         file_exists = os.path.isfile(csv_file)
