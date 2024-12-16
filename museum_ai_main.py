@@ -49,6 +49,7 @@ def get_initial_input():
         if (
             interpretation["intent"].lower() in ["unclear", "error"]
             or "negative" in interpretation["intent"].lower()
+            or "2" in interpretation["intent"].lower()
             or not user_input
         ):
             nothing_count += 1
@@ -83,11 +84,17 @@ def user_confirmation(prompt, context=None):
         # Interpret the response
         interpretation = interpret_user_response(user_input, context)
 
-        if "affirmative" in interpretation["intent"].lower():
+        if (
+            "affirmative" in interpretation["intent"].lower()
+            or "1" in interpretation["intent"].lower()
+        ):
             return True, interpretation["explanation"]
         elif "question" in interpretation["intent"].lower():
             return True, interpretation["explanation"]
-        elif "negative" in interpretation["intent"].lower():
+        elif (
+            "negative" in interpretation["intent"].lower()
+            or "2" in interpretation["intent"].lower()
+        ):
             return False, interpretation["explanation"]
         else:
             # If not clear, provide guidance
