@@ -46,7 +46,11 @@ def get_initial_input():
         # Interpret the input
         interpretation = interpret_user_response(user_input)
 
-        if interpretation["intent"].lower() in ["unclear", "error"] or not user_input:
+        if (
+            interpretation["intent"].lower() in ["unclear", "error"]
+            or "negative" in interpretation["intent"].lower()
+            or not user_input
+        ):
             nothing_count += 1
             if nothing_count >= 2:
                 print(
