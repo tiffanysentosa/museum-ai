@@ -1,0 +1,4 @@
+Model,AVG Response Time (s),STD of Response Time (s)
+Gemini,0.693,0.075
+Qwen2.5-0.5b,9.994,1.559
+Gemma2-2b,51.012,8.290
